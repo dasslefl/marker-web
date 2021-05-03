@@ -1,0 +1,3 @@
+[submodule "scidown"]
+	path = scidown
+	url = https://github.com/dasslefl/scidown-wasm
