@@ -1,90 +1,177 @@
 @page {
   size: A4;
-  margin: 0;
+  margin: 10mm 15mm;
 }
 
 @media print {
-  html, body {
+  html,
+  body {
     width: 210mm;
     height: 297mm;
+    padding: 0;
   }
-  figure {page-break-inside: avoid;}
-  .abstract{page-break-inside: avoid;}
+  /* Umbruch verhindern */
+  h2,
+  h3 {
+    page-break-inside: avoid;
+  }
+
+  h2::after {
+    content: "";
+    display: block;
+    height: 80mm;
+    margin-bottom: -80mm;
+  }
+
+  h3::after {
+    content: "";
+    display: block;
+    height: 70mm;
+    margin-bottom: -70mm;
+  }
 }
 
-
-@media screen {
-  figure {page-break-inside: avoid;}
-  .abstract{page-break-inside: avoid;}
+figure {
+  page-break-inside: avoid;
 }
 
+.abstract {
+  page-break-inside: avoid;
+}
 
-body
-{
-  font-size: 11pt;
+.abstract ol {
+  padding-inline-start: 5mm;
+}
+
+body {
+  font-size: 14px;
   margin-right: auto;
   margin-left: auto;
   max-width: 210mm;
-  background: #eee;
-  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  background-color: #002240;
+  font-family: Helvetica, arial, sans-serif;
+  line-height: 1.6;
+  padding: 10px;
+}
+
+body > *:first-child {
+  margin-top: 0 !important; 
+}
+body > *:last-child {
+  margin-bottom: 0 !important; 
 }
 
 a {
-  color: #000;
+  color: #4183C4; 
+}
+a.absent {
+  color: #cc0000; 
+}
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; 
 }
 
-.document{
+p, table {
+  margin: 8px 0; 
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 15px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; 
+}
+
+h1 {
+  font-size: 28px;
+  color: black; 
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; 
+  margin-top: 20px;
+}
+
+h3 {
+  font-size: 18px; 
+}
+
+h4 {
+  font-size: 16px; 
+}
+
+h5 {
+  font-size: 14px; 
+}
+
+h6 {
+  color: #777777;
+  font-size: 14px; 
+}
+
+.document {
   background: #fff;
   padding: 10mm;
   min-height: 100%
 }
 
-.header{
+.header {
   margin-bottom: 20pt;
 }
 
-.title{
-  text-align:center;
+.title {
+  text-align: center;
   /*text-transform: uppercase;*/
   font-size: 28px;
   margin-bottom: 2.5mm;
   margin-top: 0;
 }
 
-.authors{
-  text-align:center;
+.authors {
+  text-align: center;
   margin-bottom: 0em;
   font-size: 12pt;
 }
 
-.affiliation{
+.affiliation {
   font-size: 11pt;
-  text-align:center;
+  text-align: center;
   margin-bottom: 0em;
 }
 
-.inner
-{
+.inner {
   text-align: justify;
   text-justify: inter-word;
 }
 
-.keywords{
+.keywords {
   margin-bottom: 10px;
 }
 
-.abstract{
+.abstract {
   margin-bottom: 5mm;
   background: #fafafa;
   border: solid 1px #eee;
   padding: 0mm 5mm 0mm 5mm;
 }
-.abstract > h2 {
- font-size: 14pt;
- margin-bottom: 2px;
+
+.abstract>h2 {
+  font-size: 14pt;
+  margin-bottom: 2px;
 }
 
-figure{
+figure {
   margin-left: 0;
   margin-right: 0;
   padding: 5px;
@@ -96,48 +183,51 @@ img {
   height: auto;
 }
 
-figcaption{
+figcaption {
   margin-top: 5px;
   text-align: center;
 }
 
-pre
-{
+pre {
   font-size: 10pt;
 }
 
-figure > pre
-{
+figure>pre {
   background: #eee;
   padding: 5px 10px 5px 10px;
   margin: 0;
   color: #333;
 }
 
-
 table {
-  margin-left:auto;
-  margin-right:auto;
+  margin-left: auto;
+  margin-right: auto;
   border: 2px solid #FFFFFF;
   min-width: 50%;
   text-align: center;
   border-collapse: collapse;
   border: 1px solid #333;
 }
-table td, table th {
+
+table td,
+table th {
   padding: 3px 4px;
 }
+
 table tbody td {
   font-size: 10pt;
   border-left: 1px solid #333;
 }
+
 table tr:nth-child(even) {
   background: #DADADA;
 }
+
 table thead {
   background: #FFFFFF;
   border-bottom: 1px solid #333;
 }
+
 table thead th {
   font-size: 12pt;
   font-weight: bold;
@@ -148,7 +238,7 @@ table thead th {
 }
 
 table tr:nth-child(2n) {
-    background-color: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 table.eq_table {
@@ -156,19 +246,22 @@ table.eq_table {
   border: 0;
   width: 100%;
 }
-table.eq_table td, table.eq_table th {
+
+table.eq_table td,
+table.eq_table th {
   padding: 3px 2px;
   font-size: 11pt;
-  
 }
+
 table.eq_table tfoot td {
   font-size: 11pt;
-
 }
+
 table.eq_table tfoot .links {
   text-align: right;
 }
-table.eq_table tfoot .links a{
+
+table.eq_table tfoot .links a {
   display: inline-block;
   background: #1C6EA4;
   color: #FFFFFF;
@@ -178,41 +271,40 @@ table.eq_table tfoot .links a{
 
 td.counter {
   text-align: right;
-
 }
 
 td.eq_code {
   width: 100%;
   text-align: center;
-
 }
 
-.toc_container{
+.toc_container {
   background: #f5f5ff;
   border: solid 1px #eef;
   padding: 0mm 5mm 0mm 5mm;
 }
 
-.toc_container ul{
+.toc_container ul {
   margin-top: .5mm;
   margin-bottom: .5mm;
 }
 
-.toc_header
-{
+.toc_header {
   font-size: 14pt;
-  margin-bottom:0;
+  margin-bottom: 3mm;
 }
-.toc_list{
+
+.toc_list {
   padding-left: 0mm;
   margin-bottom: 20px !important;
 }
-.toc_list ul{
-padding-left: 5mm;
+
+.toc_list ul {
+  padding-left: 5mm;
 }
 
-.toc_list li{
-list-style-type: none;
+.toc_list li {
+  list-style-type: none;
 }
 
 .equation * {
@@ -224,7 +316,7 @@ hr {
   border-bottom: 2px solid #cccccc !important;
 }
 
-figure table{
+figure table {
   margin-left: auto;
   margin-right: auto;
   table-layout: fixed;
@@ -232,4 +324,12 @@ figure table{
 
 .footnotes p {
   margin-bottom: 1mm;
+}
+
+
+
+img {
+  max-height: 75mm;
+  display: block;
+  margin: auto;
 }

@@ -4,30 +4,15 @@ import "../splitscreen.less";
 
 import ace from "ace-builds";
 import $ from "jquery";
-import _ from "lodash";
+import * as keyval from "idb-keyval";
 
 import splitscreen from "./splitscreen";
 import * as scidown from "./scidown";
-import * as keyval from "idb-keyval";
+import * as resizeHandler from "./resizeHandler";
 import idbkeys from "./worker-scidown/idbkeys";
 
 let editor: ace.Ace.Editor;
 let currentFile: string = "demo.md";
-
-function handleResize() {
-    let editorEl = $("#editor");
-    let leftPane = $("#left-pane");
-
-    editorEl.width(leftPane.width() || 0);
-    editorEl.height(leftPane.height() || 0);
-    editor.resize();
-
-    let rightPane = $("#right-pane");
-    let frame = $("#frame");
-
-    frame.width(rightPane.width() || 0);
-    frame.height(rightPane.height() || 0);
-}
 
 // Datei laden
 async function loadFile(file: string) {
@@ -58,9 +43,6 @@ $(async function() {
     await scidown.init();
     console.log("Scidown geladen.");
     setStatus("Lade Editor...");
-
-    // Split Screen aktivieren
-    splitscreen(handleResize);
 
     // Pfad für Ace-Dateien
     ace.config.set(
@@ -106,9 +88,11 @@ $(async function() {
     // Datei in Editor laden
     await loadFile(await keyval.get(idbkeys.LastFile) || "demo.md");
 
-    // Resize Handler aktivieren
-    $(window).resize(handleResize);
-    handleResize();
+    // GUI Laden
+    // Automatischen Resize-Handler aktivieren
+    resizeHandler.init(editor);
+    // Split Screen aktivieren
+    splitscreen(resizeHandler.handleResize);
 
     $("#loading-indicator").hide();
 });

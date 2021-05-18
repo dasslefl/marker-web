@@ -2,35 +2,9 @@
 // Less für den Split Screen
 
 // wird nicht gerendered, nur zum Anfassen
-@seperator-width : 6px;
+@seperator-width : 4px;
 
-#splitscreen-container {
-    display: flex;
-    width: 100%;
-    overflow: hidden;
-}
-
-#left-pane {
-    width: calc(50% - @seperator-width);
-}
-
-#pane-separator {
-    width: @seperator-width;
-    background: transparent;
-    position: relative;
-    cursor: col-resize;
-    background-color: gray;
-    left: -1px;
-}
-
-#right-pane {
-    flex: auto;
-}
-
-#splitscreen-container,
-#pane-separator,
-#left-pane,
-#right-pane {
+.all-parts {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -39,4 +13,39 @@
     -webkit-user-select: none;
 	-webkit-user-drag: none;
 	-webkit-app-region: no-drag;
+}
+
+#splitscreen-container {
+    .all-parts();
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+}
+
+#left-pane {
+    .all-parts();
+    width: calc(50% - @seperator-width);
+}
+
+#pane-separator {
+    .all-parts();
+    width: @seperator-width;
+    background: transparent;
+    position: relative;
+    cursor: col-resize;
+    opacity: 0;
+    transition: 0.3s;
+    background-color: rgb(80, 80, 255);
+    margin-left: calc(-@seperator-width / 2);
+    margin-right: calc(-@seperator-width / 2);
+    z-index: 10;
+}
+
+#pane-separator:hover {
+    opacity: 1;
+}
+
+#right-pane {
+    .all-parts();
+    flex: auto;
 }
