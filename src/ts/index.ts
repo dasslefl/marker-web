@@ -14,6 +14,35 @@ import idbkeys from "./worker-scidown/idbkeys";
 let editor: ace.Ace.Editor;
 let currentFile: string = "demo.md";
 
+// Datei darstellen
+async function displayFile(file: string) {
+    // Datei in HTML rendern
+    console.time("render");
+    let html = await scidown.renderFile(file);
+    console.timeEnd("render");
+
+    // Body extrahieren
+    let bodys = html.match(/(?<=<body>)(.*?)(?=<\/body>)/s);
+    if(bodys == null) return;
+    let body = bodys[0];
+
+    // <script> Tags eliminieren
+    body = body.replace(/<script>(.*?)<\/script>/s, "");
+
+    // Body in das Frame klatschen
+    let frame = document.getElementById('frame') as HTMLFrameElement;
+    let frameWindow = frame.contentWindow; 
+    if(frameWindow == null) return;
+
+    frameWindow.document.body.innerHTML = body;
+    
+    // Keine Ahnung was das wird
+    // @ts-ignore
+    frameWindow.eval("renderMathInElement(document.body)");
+
+    //console.log(body);
+}
+
 // Datei laden
 async function loadFile(file: string) {
     currentFile = file;
@@ -28,8 +57,9 @@ async function loadFile(file: string) {
 
     editor.setValue(content);
     editor.selection.clearSelection();
+    editor.getSession().getUndoManager().reset();
 
-    $('#frame').attr('src', await scidown.renderFile(currentFile));
+    await displayFile(currentFile);
 }
 
 function setStatus(status: string) {
@@ -51,21 +81,41 @@ $(async function() {
     );
 
     let session = new ace.EditSession("# This is Markdown");
-
     session.setMode("ace/mode/markdown");
+
+    let undoManager = new ace.UndoManager();
+    session.setUndoManager(undoManager);
 
     editor = ace.edit("editor");
     editor.setTheme("ace/theme/cobalt");
     editor.setSession(session);
     editor.setShowPrintMargin(false);
     editor.setFontSize("20px");
+
+    editor.commands.addCommand({
+        name: 'undo',
+        bindKey: { win: 'Ctrl-Z',  mac: 'Command-Z' },
+        exec: function(editor) {
+            editor.session.getUndoManager().undo(editor.session);
+        },
+        readOnly: false
+    });
+
+    editor.commands.addCommand({
+        name: 'redo',
+        bindKey: { win: 'Ctrl-Y',  mac: 'Command-Y' },
+        exec: function(editor) {
+            editor.session.getUndoManager().redo(editor.session);
+        },
+        readOnly: false
+    });
     
     editor.commands.addCommand({
         name: 'save',
         bindKey: { win: 'Ctrl-S',  mac: 'Command-S' },
         exec: async function(editor) {
             await scidown.writeFile(currentFile, editor.getValue());
-            $('#frame').attr('src', await scidown.renderFile(currentFile));
+            displayFile(currentFile);
             await scidown.syncFS();
             await keyval.set(idbkeys.LastFile, currentFile);
             console.log("saved");
@@ -82,7 +132,32 @@ $(async function() {
                 loadFile(file);
             }
         },
-        readOnly: false
+        readOnly: true
+    });
+
+    // Knöpfe aktivieren (temporär)
+    $("#btn-open").click(function() {
+        let file = prompt("Dateiname eingeben:");
+        if(file) {
+            loadFile(file);
+        }
+    });
+    $("#btn-save").click(async function() {
+        await scidown.writeFile(currentFile, editor.getValue());
+        displayFile(currentFile);
+        await scidown.syncFS();
+        await keyval.set(idbkeys.LastFile, currentFile);
+        console.log("saved");
+    });
+    $("#btn-render").click(async function() {
+        console.time("render");
+        let html = await scidown.renderFile(currentFile);
+        console.timeEnd("render");
+
+        var blob = new Blob([html], {type: "text/html"});
+        var url  = window.URL.createObjectURL(blob);
+
+        window.open(url,'_blank');
     });
 
     // Datei in Editor laden
@@ -94,5 +169,7 @@ $(async function() {
     // Split Screen aktivieren
     splitscreen(resizeHandler.handleResize);
 
+    // GUI aktivieren
     $("#loading-indicator").hide();
+    $("#content").show();
 });

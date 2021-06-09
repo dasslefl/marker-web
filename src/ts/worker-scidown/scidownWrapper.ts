@@ -34,7 +34,7 @@ export async function initialize() {
 
 // Dokument rendern, als String zurück geben
 export async function renderDocument(file: string): Promise<string> {
-    console.log(`Beginning to render ${file}`);
+    // console.log(`Beginning to render ${file}`);
     // Rendering initilisieren
     let returnValue = scidown.scidownStartRender(file);
 

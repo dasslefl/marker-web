@@ -31,6 +31,11 @@
   }
 }
 
+:root {
+  /* Dark Mode 4life */
+  color-scheme: dark;
+}
+
 figure {
   page-break-inside: avoid;
 }
@@ -50,6 +55,7 @@ body {
   max-width: 210mm;
   background-color: #002240;
   font-family: Helvetica, arial, sans-serif;
+  color: black;
   line-height: 1.6;
   padding: 10px;
 }

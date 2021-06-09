@@ -9,18 +9,24 @@ let editor: ace.Ace.Editor;
 let frameCountUntilResize = 0;
 
 export function handleResize() {
+    // Starthöhe
+    let offset = $("#topbar").height() || 0;
+    // Höhe des Inhalts
+    let height = ($("body").height() || 0) - offset;
+
     let editorEl = $("#editor");
     let leftPane = $("#left-pane");
 
+    editorEl.css("top", `${offset + 1}px`);
     editorEl.width(leftPane.width() || 0);
-    editorEl.height(leftPane.height() || 0);
+    editorEl.height(height);
     editor.resize();
 
     let rightPane = $("#right-pane");
     let frame = $("#frame");
 
     frame.width(rightPane.width() || 0);
-    frame.height(rightPane.height() || 0);
+    frame.height(height);
 }
 
 export function init(_editor: ace.Ace.Editor) {

@@ -8,6 +8,7 @@ body {
     margin: 0;
     overflow: hidden;
     height: 100vh;
+    font-family: Helvetica, arial, sans-serif;
 }
 
 #editor {
@@ -22,4 +23,32 @@ body {
     display: block;
     position: relative;
     border: 0;
+}
+
+#topbar {
+    // Flexbox FTW
+    flex-flow: row nowrap;
+
+    display: flex;
+    width: 100vw;
+    height: 30px;
+    background-color: rgb(35, 36, 48);
+    border-bottom: 1px solid rgb(83, 86, 110);
+    align-items: center;
+    padding-left: 20px;
+}
+
+.topbar-button {
+    color: white;
+    padding: 4px;
+    margin: 0 1px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.1s ease-in-out;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
 }

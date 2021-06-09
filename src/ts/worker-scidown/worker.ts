@@ -9,6 +9,8 @@ import * as scidownFS from "./scidownFS";
 
 let messageHandlers: { [key: number]: (payload?: any) => Promise<any> };
 
+// Genutzt, um gerendertes in Blob zu überführen, ungenutzt
+/*
 let blobUrl: string;
 
 async function renderWrapper(file: string): Promise<string> {
@@ -21,12 +23,13 @@ async function renderWrapper(file: string): Promise<string> {
     console.log(blobUrl);
     return blobUrl;
 }
+*/
 
 function initEventHandlers() {
     messageHandlers[WorkerOperation.Initialize] = scidownWrapper.initialize;
     messageHandlers[WorkerOperation.WriteFile] = scidownFS.writeFile;
     messageHandlers[WorkerOperation.ReadFile] = scidownFS.readFile;
-    messageHandlers[WorkerOperation.RenderFile] = renderWrapper;
+    messageHandlers[WorkerOperation.RenderFile] = scidownWrapper.renderDocument;
     messageHandlers[WorkerOperation.SyncFS] = scidownFS.sync;
 }
 

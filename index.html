@@ -13,7 +13,7 @@
             overflow: hidden;
         }
         #loading-indicator {
-            position: relative;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
@@ -31,6 +31,14 @@
     <div id="loading-indicator">
         Lade JavaScript...
     </div>
+
+    
+    <div id="topbar">
+        <div class="topbar-button" id="btn-open">Öffnen</div>
+        <div class="topbar-button" id="btn-save">Speichern</div>
+        <div class="topbar-button" id="btn-render">Dokument Rendern</div>
+    </div>
+
     <div id="splitscreen-container">
         <div id="left-pane">
             <pre id="editor">
@@ -38,11 +46,12 @@
         </div>
         <div id="pane-separator"></div>
         <div id="right-pane">
-            <iframe id="frame">
+            <iframe id="frame" src="iframe.html">
 
             </iframe>
         </div>
     </div>
+    
     
 </body>
 </html>
